@@ -679,7 +679,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
         if (p == 23 && !header_found) {
             code = 6942LL;
             RCSwitch::nReceivedValue = code;
-        RCSwitch::nReceivedBitlength = (changeCount - 1) / 2;
+        RCSwitch::nReceivedBitlength = 64;
         RCSwitch::nReceivedDelay = delay;
         RCSwitch::nReceivedProtocol = p;
             return true;
