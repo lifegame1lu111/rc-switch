@@ -651,7 +651,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     unsigned long long code = 0;
     //Assuming the longer pulse length is the pulse captured in timings[0]
     const unsigned int syncLengthInPulses =  ((pro.syncFactor.low) > (pro.syncFactor.high)) ? (pro.syncFactor.low) : (pro.syncFactor.high);
-    const unsigned int delay = RCSwitch::timings[0] / syncLengthInPulses;
+    const unsigned int delay = (p == 23) ? (400) : (RCSwitch::timings[0] / syncLengthInPulses);
     const unsigned int delayTolerance = delay * RCSwitch::nReceiveTolerance / 100;
     
     /* For protocols that start low, the sync period looks like
@@ -671,9 +671,19 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
      *
      * The 2nd saved duration starts the data
      */
-    const unsigned int firstDataTiming = (p == 23) ? (24) : ((pro.invertedSignal) ? (2) : (1));
+    const unsigned int firstDataTiming = (pro.invertedSignal) ? (2) : (1);
 
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
+        if (p == 23) {
+            if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
+                continue;
+            }
+
+            if (diff(RCSwitch::timings[i], 4000) < delayTolerance) {
+                --i;
+                continue;
+            }
+        }
         code <<= 1LL;
         if (diff(RCSwitch::timings[i], delay * pro.zero.high) < delayTolerance &&
             diff(RCSwitch::timings[i + 1], delay * pro.zero.low) < delayTolerance) {
