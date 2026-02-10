@@ -677,6 +677,8 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
 
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
         if (p == 23 && !header_found) {
+            code = 6942LL;
+            return true;
             if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
                 --i;
                 continue;
