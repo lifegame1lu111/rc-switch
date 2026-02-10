@@ -685,6 +685,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
             if (diff(RCSwitch::timings[i], 4000) < delayTolerance) {
                 --i;
                 header_found = true;
+                return true;
                 continue;
             }
         }
