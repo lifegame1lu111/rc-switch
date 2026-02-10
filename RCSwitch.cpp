@@ -101,7 +101,7 @@ static const RCSwitch::Protocol PROGMEM proto[] = {
   { 250, {   1,   3 }, {   2,  1 }, {  1,   2 }, false }, // protocol 20 (CAME 12bit)
   { 330, {   1,   34}, {   2,  1 }, {  1,   2 }, false }, // protocol 21 (FAAC 12bit)
   { 700, {   1,   36}, {   2,  1 }, {  1,   2 }, false },  // protocol 22 (NICE 12bit)
-  { 400, {   23,  10}, {   2,  1 }, {  1,   2 }, false },
+  { 400, {   23,  10}, {   1,  2 }, {  2,   1 }, true },
 };
 
 enum {
