@@ -676,6 +676,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
         if (p == 23) {
             if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
+                --i;
                 continue;
             }
 
