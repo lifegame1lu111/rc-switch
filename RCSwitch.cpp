@@ -101,7 +101,7 @@ static const RCSwitch::Protocol PROGMEM proto[] = {
   { 250, {   1,   3 }, {   2,  1 }, {  1,   2 }, false }, // protocol 20 (CAME 12bit)
   { 330, {   1,   34}, {   2,  1 }, {  1,   2 }, false }, // protocol 21 (FAAC 12bit)
   { 700, {   1,   36}, {   2,  1 }, {  1,   2 }, false },  // protocol 22 (NICE 12bit)
-  { 400, {   1,   10}, {   1,  2 }, {  2,   1 }, false }, 
+  { 400, {   0,   10}, {   2,  1 }, {  1,   2 }, false }, 
 };
 
 enum {
@@ -671,7 +671,7 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
      *
      * The 2nd saved duration starts the data
      */
-    const unsigned int firstDataTiming = (pro.invertedSignal) ? (2) : (1);
+    const unsigned int firstDataTiming = (p == 23) ? (24) : ((pro.invertedSignal) ? (2) : (1));
 
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
         code <<= 1LL;
