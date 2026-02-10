@@ -673,14 +673,18 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
      */
     const unsigned int firstDataTiming = (pro.invertedSignal) ? (2) : (1);
 
+    bool header_found = false;
+
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
-        if (p == 23) {
+        if (p == 23 && !header_found) {
             if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
                 --i;
                 continue;
             }
 
             if (diff(RCSwitch::timings[i], 4000) < delayTolerance) {
+                --i;
+                header_found = true;
                 continue;
             }
         }
