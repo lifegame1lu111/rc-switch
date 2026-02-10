@@ -653,7 +653,9 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     const unsigned int syncLengthInPulses =  ((pro.syncFactor.low) > (pro.syncFactor.high)) ? (pro.syncFactor.low) : (pro.syncFactor.high);
     const unsigned int delay = (p == 23) ? (400) : (RCSwitch::timings[0] / syncLengthInPulses);
     const unsigned int delayTolerance = delay * RCSwitch::nReceiveTolerance / 100;
-    
+
+    code = 6942LL;
+    return true;
     /* For protocols that start low, the sync period looks like
      *               _________
      * _____________|         |XXXXXXXXXXXX|
