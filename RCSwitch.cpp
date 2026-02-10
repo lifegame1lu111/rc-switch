@@ -677,12 +677,6 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
 
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
         if (p == 23 && !header_found) {
-            code = 6942LL;
-            RCSwitch::nReceivedValue = code;
-        RCSwitch::nReceivedBitlength = 64;
-        RCSwitch::nReceivedDelay = delay;
-        RCSwitch::nReceivedProtocol = p;
-            return true;
             if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
                 --i;
                 continue;
@@ -735,6 +729,7 @@ void RECEIVE_ATTR RCSwitch::handleInterrupt() {
   unsigned int duration = time - lastTime;
 
   if (duration > RCSwitch::nSeparationLimit) {
+    Serial.println(duration);
     // A long stretch without signal level change occurred. This could
     // be the gap between two transmission.
     if ((repeatCount==0) || (diff(duration, RCSwitch::timings[0]) < 200)) {
