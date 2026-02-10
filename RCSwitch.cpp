@@ -654,8 +654,6 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     const unsigned int delay = (p == 23) ? (400) : (RCSwitch::timings[0] / syncLengthInPulses);
     const unsigned int delayTolerance = delay * RCSwitch::nReceiveTolerance / 100;
 
-    code = 6942LL;
-    return true;
     /* For protocols that start low, the sync period looks like
      *               _________
      * _____________|         |XXXXXXXXXXXX|
@@ -680,6 +678,10 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
     for (unsigned int i = firstDataTiming; i < changeCount - 1; i += 2) {
         if (p == 23 && !header_found) {
             code = 6942LL;
+            RCSwitch::nReceivedValue = code;
+        RCSwitch::nReceivedBitlength = (changeCount - 1) / 2;
+        RCSwitch::nReceivedDelay = delay;
+        RCSwitch::nReceivedProtocol = p;
             return true;
             if (diff(RCSwitch::timings[i], 400) < delayTolerance) {
                 --i;
@@ -689,7 +691,6 @@ bool RECEIVE_ATTR RCSwitch::receiveProtocol(const int p, unsigned int changeCoun
             if (diff(RCSwitch::timings[i], 4000) < delayTolerance) {
                 --i;
                 header_found = true;
-                return true;
                 continue;
             }
         }
